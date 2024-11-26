@@ -9,6 +9,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT *
         FROM board
         ORDER BY created_at DESC
+        LIMIT #{page.index}, #{page.rows}
+    </select>
+
+    <select id="listByPage" resultType="Board">
+        SELECT *
+        FROM board
+        ORDER BY created_at DESC
+        LIMIT #{page.index}, #{page.rows}
     </select>
 
     <select id="select" resultType="Board">
@@ -43,5 +51,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="maxPk" resultType="int">
         SELECT MAX(no)
         FROM board
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+          FROM board
     </select>
 </mapper>

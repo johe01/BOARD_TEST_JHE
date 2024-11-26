@@ -2,21 +2,20 @@ package com.aloha.board.controller;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aloha.board.domain.Board;
+import com.aloha.board.domain.Page;
 import com.aloha.board.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -29,11 +28,21 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/list")
-    public String list(Model model) throws Exception{
+    public String list(Model model, Page page) throws Exception{
 
-        List<Board> boardList = boardService.list();
+        List<Board> boardList = boardService.list(page);
 
+        log.info("first:"+page.getFirst());
+        log.info("prev:"+page.getPrev());
+        log.info("next:"+page.getNext());
+        log.info("last:"+page.getLast());
+        log.info("start:"+page.getStart());
+        log.info("end:"+page.getEnd());
+        
+        
+        model.addAttribute("page", page);
         model.addAttribute("boardList", boardList);
+        model.addAttribute("rows", page.getRows());
 
         return "board/list";
     }
